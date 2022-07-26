@@ -1,0 +1,18 @@
+server:
+  port: 8888
+spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB
+      max-request-size: 200MB
+  profiles:
+    active: table
+  redis:
+    host: 192.168.137.20
+    port: 6379
+    timeout: 20000
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-wait:
