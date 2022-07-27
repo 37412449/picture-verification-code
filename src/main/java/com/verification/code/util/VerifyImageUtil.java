@@ -8,7 +8,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.text.NumberFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -21,6 +20,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
 
 import com.verification.code.config.SpringContextUtil;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * 滑块验证工具类
@@ -78,7 +78,7 @@ public class VerifyImageUtil {
     /**
      * 存放最大10分钟
      */
-    private final static int MINUTES_10 = 10;
+    public final static int MINUTES_10 = 10;
 
     public static int getX() {
         return X;
@@ -90,6 +90,7 @@ public class VerifyImageUtil {
 
     public static int getTemplateIndex() {
         Random random = new Random();
+        int a = random.nextInt(4) % (4 - 1 + 1) + 1;
         return random.nextInt(CLASSPATHURL_TEMPLATE_LENGTH) %
                 (CLASSPATHURL_TEMPLATE_LENGTH - CLASSPATHURL_TEMPLATE_TARGET_LENGTH_START + 1) +
                 CLASSPATHURL_TEMPLATE_TARGET_LENGTH_START;
@@ -169,7 +170,6 @@ public class VerifyImageUtil {
 
         //当前产生的图片X偏移存入redis,10分钟有效
         RedisUtil redisUtil = SpringContextUtil.getBean(RedisUtil.class);
-
         JSONObject jsonObject = new JSONObject();
 
         // 位置
@@ -182,7 +182,7 @@ public class VerifyImageUtil {
         return pictureMap;
     }
 
-    private static String dealMatNoLineImg(BufferedImage matLienImg) throws IOException {
+    private static @NotNull String dealMatNoLineImg(@NotNull BufferedImage matLienImg) throws IOException {
         String strNoLineImg = "";
         BufferedImage bi = new BufferedImage(matLienImg.getWidth(), matLienImg.getHeight(), matLienImg.getType());
         bi.setData(matLienImg.getData());
@@ -435,9 +435,6 @@ public class VerifyImageUtil {
         } else {
             Y = random.nextInt(ORI_HEIGHT - HEIGHT) + 5;
         }
-
-        NumberFormat numberFormat = NumberFormat.getInstance();
-        numberFormat.setMaximumFractionDigits(2);
     }
 }
 

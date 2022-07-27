@@ -1,6 +1,7 @@
 package com.verification.code.controller;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,7 @@ public class VerifyImageController {
         if (failCounts < _failCounts) {
             failCounts++;
             jsonObject.put("failCounts", failCounts);
-            redisUtil.set(acptureUuid.trim(), jsonObject.toString());
+            redisUtil.set(acptureUuid.trim(), jsonObject.toString(), TimeUnit.MINUTES.toSeconds(VerifyImageUtil.MINUTES_10));
             return new Result().error("非常遗憾，验证失败了，再试一次吧！");
         } else {
             redisUtil.del(acptureUuid.trim());
